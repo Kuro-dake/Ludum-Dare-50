@@ -38,6 +38,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: heal
+    uniqueID: 1495612787
+    locked: 0
   - name: earth
     uniqueID: 4177889735
     locked: 0
@@ -52,4 +55,7 @@ TagManager:
     locked: 0
   - name: top hair
     uniqueID: 3288716049
+    locked: 0
+  - name: over all
+    uniqueID: 548648757
     locked: 0

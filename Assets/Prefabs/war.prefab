@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 7211152952818365452}
   - component: {fileID: 4944950215957444935}
   - component: {fileID: 7135711671470666893}
-  - component: {fileID: -2499012930194856122}
+  - component: {fileID: -292567415638593889}
   m_Layer: 0
-  m_Name: fire
+  m_Name: war
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41,7 +41,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6484071454695633065}
   serializedVersion: 7
-  lengthInSec: 0.8
+  lengthInSec: 1
   simulationSpeed: 0.5
   stopAction: 0
   cullingMode: 0
@@ -116,8 +116,8 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.75
-      minScalar: 0.5
+      scalar: 0.35
+      minScalar: 0.25
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -222,8 +222,8 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 1, g: 0.9637364, b: 0.645283, a: 1}
-      maxColor: {r: 0.9811321, g: 0.5127803, b: 0.5127803, a: 1}
+      minColor: {r: 0.8117647, g: 0.79483473, b: 0.23137252, a: 1}
+      maxColor: {r: 0.8679245, g: 0.41107696, b: 0.3471698, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -443,7 +443,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startRotationX:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 0
       minScalar: 0
       maxCurve:
@@ -496,7 +496,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startRotationY:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 0
       minScalar: 0
       maxCurve:
@@ -549,8 +549,8 @@ ParticleSystem:
         m_RotationOrder: 4
     startRotation:
       serializedVersion: 2
-      minMaxState: 0
-      scalar: 0
+      minMaxState: 3
+      scalar: 6.283185
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -603,7 +603,7 @@ ParticleSystem:
     randomizeRotationDirection: 0
     maxNumParticles: 1000
     size3D: 0
-    rotation3D: 1
+    rotation3D: 0
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
@@ -866,7 +866,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 40
+      scalar: 80
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -1253,8 +1253,8 @@ ParticleSystem:
     curve:
       serializedVersion: 2
       minMaxState: 3
-      scalar: -6.283185
-      minScalar: 6.283185
+      scalar: -12.56637
+      minScalar: 12.56637
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -1490,7 +1490,7 @@ ParticleSystem:
     uvChannelMask: -1
     rowMode: 1
     sprites:
-    - sprite: {fileID: 7661091447932826204, guid: 644d66341b327164780fda84e9b16aa6, type: 3}
+    - sprite: {fileID: 21300000, guid: eee35d37ee936074a9bf3a0e8290b7d0, type: 3}
     flipU: 0
     flipV: 0
   VelocityModule:
@@ -1498,8 +1498,8 @@ ParticleSystem:
     x:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.1
-      minScalar: -0.1
+      scalar: 0.4
+      minScalar: -0.4
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -1551,7 +1551,7 @@ ParticleSystem:
     y:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.4
+      scalar: 0.9
       minScalar: 0.6
       maxCurve:
         serializedVersion: 2
@@ -4814,7 +4814,7 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
---- !u!114 &-2499012930194856122
+--- !u!114 &-292567415638593889
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

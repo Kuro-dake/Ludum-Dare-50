@@ -59,9 +59,11 @@ public class GM : MonoBehaviour
         writing = false;
     }
     [SerializeField]
-    float fade_delay, letter_delay = .05f, earth_radius = .51f;
+    float fade_delay, letter_delay = .05f, earth_radius = .51f, spend_speed;
     [SerializeField]
     Damages damages;
+    [SerializeField]
+    Health health, energy_indicator;
     void Start()
     {
         text_object.text = "";
@@ -77,31 +79,51 @@ public class GM : MonoBehaviour
             s += new WaitAction(() => writing);
             s += .5f;
         }
-        float monkey_spawn_delay = .25f;
-        s += (new SimpleLoopableAction(AdvanceText) & (new WaitForSecondsAction(2f) + GenerateMonkey) );
+        if(current_text < 4)
+        {
+            s += (new SimpleLoopableAction(AdvanceText) & (new WaitForSecondsAction(2f) + GenerateMonkey) );
         
-        s += new WaitAction(() => writing);
+            s += new WaitAction(() => writing);
+
+        }
+        if(current_text < 5)
+        {
+
+            float monkey_spawn_delay = .25f;
+            s += (new SimpleLoopableAction(AdvanceText) 
+                & (new WaitForSecondsAction(2f) + GenerateMonkey 
+                + monkey_spawn_delay + GenerateMonkey 
+                + monkey_spawn_delay + GenerateMonkey 
+                + monkey_spawn_delay + GenerateMonkey));
+            
+            s += new WaitAction(() => writing);
+        }
         
-        s += (new SimpleLoopableAction(AdvanceText) 
-            & (new WaitForSecondsAction(2f) + GenerateMonkey 
-            + monkey_spawn_delay + GenerateMonkey 
-            + monkey_spawn_delay + GenerateMonkey 
-            + monkey_spawn_delay + GenerateMonkey));
-        
-        s += new WaitAction(() => writing);
 
         s += 1f;
 
         s += AdvanceGame();
         s += new WaitAction(() => writing);
-        s += 1f;
-
-        s += AdvanceGame();
+        s += AdvanceText;
 
         s.Run();
         flash = 0f;
+        StartCoroutine(SpawnMonkeys());
+        
     }
-    int current_text = 3;
+    IEnumerator SpawnMonkeys()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(Random.Range(.5f, 1.5f));
+            if(monkeys.Count < (phase + 1) * 5)
+            {
+                GenerateMonkey();
+            }
+            yield return null;
+        }
+    }
+    int current_text = 5;
     void AdvanceText()
     {
         string text = game_texts[current_text++];
@@ -117,56 +139,147 @@ public class GM : MonoBehaviour
     Sequence AdvanceGame()
     {
         
-        return Sequence.New() + (new SimpleLoopableAction(()=> { phase++;AdvanceText();flash = 1f; }) + new WaitForSecondsAction(1f) + (()=>GenerateRandomDisaster(phase)));
+        return Sequence.New() + (new SimpleLoopableAction(()=> {
+            if (phase <= 5)
+            {
+                phase++;
+                for(int i = 0; i < 4; i++)
+                {
+                    damages.ChangeDamage(i, 0f);
+                }
+            }
+            else
+            {
+                atom_war = true;
+                for (int i = 0; i < 4; i++)
+                {
+                    damages.ChangeDamage(i, 1f);
+                }
+            }
+            AdvanceText(); 
+        }) + new WaitForSecondsAction(1f) + (()=>GenerateRandomDisaster(phase)));
     }
+
+    bool atom_war = false;
     float delay = 0f;
     // Update is called once per frame
     void Update()
     {
-        if(phase >= 0 && !writing)
+        if(phase < 0)
+        {
+            return;
+        }
+        if(phase >= 0)
         {
             delay -= Time.deltaTime;
             if(delay < 0f)
             {
-                delay = disaster_delays[phase];
+                
                 GenerateRandomDisaster();
             }
         }
+        
         if(flash != 0f)
         {
             flash = Mathf.MoveTowards(flash, 0f, Time.deltaTime * flash_fade_speed);
         }
         
+        if(energy <= 0f)
+        {
+            spent = true;
+        }
+        if(energy >= 1f)
+        {
+            spent = false;
+        }
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            AdvanceGame().Run();
+        }
+        
+        bool any_pressed = false;
         controls.ForEach(kc =>
         {
             if (Input.GetKey(kc))
             {
+                any_pressed = true;
+                if (spent)
+                {
+                    damages.UnplayHeal(kc);
+                    return;
+                }
+                
                 damages.ChangeDamage(kc, -Time.deltaTime);
+                energy = Mathf.Clamp(energy - spend_speed * Time.deltaTime, 0f, 1f);
+            }
+            else
+            {
+                damages.UnplayHeal(kc);
             }
         });
+        
+        if (!any_pressed || spent)
+        {
+            energy += Time.deltaTime * recharge_speeds[phase];
+        }
+        energy_indicator.health = atom_war ? 0f : energy;
+        health.health = atom_war ? 0f : 1f - damages.sum / hp;
+        //if (!writing)
+        {
+            current_anim_blend = Mathf.MoveTowards(current_anim_blend, (1f/6)*phase, Time.deltaTime * .5f);
+            gaia.GetComponent<Animator>().SetFloat("Blend", current_anim_blend);
+            flash_parent.GetComponent<Animator>().SetFloat("Blend", current_anim_blend);
+
+        }
     }
+    float current_anim_blend = 0f;
+    List<Monkey> _monkeys = new List<Monkey>();
+    List<Monkey> monkeys
+    {
+        get
+        {
+            _monkeys.RemoveAll(m => m == null);
+            return _monkeys;
+        }
+    }
+    bool spent = false;
+    float energy = 1f;
+    [SerializeField]
+    float hp = 2f;
     List<KeyCode> controls = new List<KeyCode>() { KeyCode.A, KeyCode.W, KeyCode.S, KeyCode.D };
 
     GameObject GenerateRandomDisaster(int force = -1)
     {
-        GameObject inst = Instantiate(env_prefabs[force == -1?Random.Range(0, phase + 1) : force]);
+        delay = disaster_delays[phase];
+        GameObject inst = Instantiate(env_prefabs[atom_war ? 6 : (force == -1?Random.Range(0, phase + 1) : force)]);
         Transform parent = new GameObject("d_parent").transform;
         inst.transform.SetParent(parent);
         inst.transform.localPosition = Vector3.up * earth_radius;
         parent.SetParent(surface_parent);
         parent.localPosition = Vector3.zero;
 
-        int rot = Random.Range(2, 6);
+        int rot = force != -1 ? 4 : Random.Range(2, 6);
+
+        ParticleSystem.MainModule mm = inst.GetComponent<ParticleSystem>().main;
+        mm.customSimulationSpace = surface_parent;
 
         parent.localRotation = Quaternion.Euler(Vector3.forward * (rot * -90f + -20f + earth_counter_rotation));
-        damages.ChangeDamage(rot - 2, .5f);
+        flash = 1f;
+        if (!writing)
+        {
+            damages.ChangeDamage(rot - 2, damage_dealt);
+
+        }
         return inst;
     }
-
+    float damage_dealt => damages_dealt[phase];
+    
+    [SerializeField]
+    List<float> damages_dealt,recharge_speeds;
     float earth_counter_rotation => -surface_parent.localRotation.eulerAngles.z - surface_parent.parent.localRotation.eulerAngles.z;
     void GenerateMonkey()
     {
-        Instantiate(monkey_prefab, surface_parent);
+        monkeys.Add(Instantiate(monkey_prefab, surface_parent));
     }
 
     [SerializeField]
