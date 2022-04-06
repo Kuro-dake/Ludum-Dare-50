@@ -11,21 +11,63 @@ And look! It has friends!
 --
 And they invented fire. How ingenious!
 --
-I know it hurts mother, 
+I know it stings a bit mother, 
 but bear with your children. They're just cold. 
+--
+<size=25><i>Hold WASD keys to heal Gaia. Watch the energy meter (blue cross). When it runs out, you have to wait until it fully regenerates.</i></size>
+--
+Your children have learned to build houses out of wood!
+They are cutting your trees down, but don't worry! They will only take what is necesarry.
+--
+They learned to till the soil and invented agriculture.
+Forgive them for disrupting your land, but they were starving.
+--
+They did start to overeat as soon as they were able to thought...
+--
+They have started what they call an industrial era.
+They burn a lot of coal, and they are leaving their trash everywhere.
 
-(Press WASD to heal Gaia)
+Come on monkeys... Clean up after yourselves! It's not that hard!
 --
-Woodcutting
+They are still young. Please have patience.
 --
-Agriculture
+So they started drilling for oil now, and they are burning a lot of it.
+Damn monkeys... the smoke is everywhere, and they don't seem to mind one bit.
 --
-Industry
+Also they call themselves the crown of creation. 
+They sure are into their hype a lot.
 --
-Oil
+Oh god what now? 
 --
-War
+Oh it's nothing. They're just using their advancements so they could <size=60>murder more of themselves!!!</size>
 --
-Atom
----
-atom war
+<size=80>What the hell?!</size>
+<size=80>F****ng monkeys!!</size>
+--
+Mother, are you okay? You seem a little bit agitated...
+--
+Oh wow! They invented the atomic fission! With a little bit of care and ingenuity they can really advance...
+--
+Aaaaand they are using it to kill each other. 
+--
+And now every monkey that has one started flinging the atom bombs at the other monkeys.
+--
+<size=80f>You damn monkeys! Stop behaving like...!</size>
+--
+...
+--
+<size=80f>Like a bunch of damn monkeys!</size>
+--
+...
+--
+Mother...?
+--
+The end
+
+made by kuro@dizztal
+
+for Ludum dare 50
+
+2. - 4. 4. 2022
+
+Thanks for playing
